@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="chartkick.js"></script>
+
+</head>
+
+<body>
+ <h1>Tougg:Stats</h1>
+    <div id="chart-1" style="height: 300px;"></div>
+    <script>
+       var data = [];
+       var socket = new WebSocket("ws://localhost:8080/happiness");
+
+       socket.onmessage = function(event){
+           var orders = JSON.parse(event.data)["orders"];
+           var clients = JSON.parse(event.data)["clients"];
+           var notes= JSON.parse(event.data)["notes"];
+
+           data["clients"] = clients
+           data["orders"] = orders;
+           data["notes"] = notes;
+           console.log(data);
+ 
+           new Chartkick.ColumnChart("chart-1", data);
+       }
+       data = {"clients": 0, "orders": 0, "notes": 0}
+           new Chartkick.ColumnChart("chart-1", data);
+    </script>
+
+</body>
+
+
+</html>
